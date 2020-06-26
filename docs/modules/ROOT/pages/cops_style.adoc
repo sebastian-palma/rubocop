@@ -6456,6 +6456,42 @@ end
 
 * https://rubystyle.guide#no-parens-around-condition
 
+== Style/HashTransformKeys
+
+NOTE: Required Ruby version: 2.5
+
+|===
+| Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
+
+| Pending
+| No
+| Yes (Unsafe)
+| 0.86
+| -
+|===
+
+This cop looks for uses of `_.all? { ... }`, `_.any? { ... }`,
+`_.none? { ... }`, and `_.one? { ... }` where the `===` method is
+invoked in its block, being in the yielded value or something else,
+and tries to pass the `===` argument as the argument for the
+enumerable predicate method used.
+
+This cop should only be enabled on Ruby version 2.5 or newer
+(`all?` / `any?` / `none?` / `one?` pattern support was added in Ruby 2.5.0)
+
+=== Examples
+
+[source,ruby]
+----
+# bad
+[1, 2, 3].any? { |e| Set[1, 2, 3] === e }
+[1, 2, 3].one? { |e| Range.new(1, 10) === e }
+
+# good
+[1, 2, 3].any?(Set[1, 2, 3])
+[1, 2, 3].one?(Range.new(1, 10))
+----
+
 == Style/PercentLiteralDelimiters
 
 |===
